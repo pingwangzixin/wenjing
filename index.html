@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="{CSS_PATH}musiccss/reset.css">
+		<link rel="stylesheet" href="{CSS_PATH}musiccss/main.css">
+		<link rel="stylesheet" href="{CSS_PATH}musiccss/jplayer.blue.monday.css">
+		<title>{if isset($SEO['title']) && !empty($SEO['title'])}{$SEO['title']}{/if}{$SEO['site_title']}</title>
+		<script src="{JS_PATH}musicjs/jquery.min.js"></script>
+		<script src="{JS_PATH}musicjs/jquery.jplayer.min.js"></script>
+		<script src="{JS_PATH}musicjs/jplayer.playlist.min.js"></script>
+	</head>
+
+	<!--php	-->
+	<?php
+                    $sslist="";
+                    $link = mysql_connect('qdm224606434.my3w.com', 'qdm224606434', 'wangxin8685') 
+                    or die('Could not connect: ' . mysql_error());
+                    mysql_select_db('qdm224606434_db') or die('Could not select database');
+                    
+                    mysql_query("SET NAMES UTF8");
+                    
+                    $query = 'SELECT * FROM v9_news';
+                    $result = mysql_query($query) or die('Query failed: ' . mysql_error());
+                    $sslist.="[";
+                    $sslist2="";
+                    while($row = mysql_fetch_row($result)){
+                        $sslist2.="{";
+                        $sslist2.="title:'";
+                        $sslist2.="$row[3]";
+                        $sslist2.="',";
+                        $sslist2.="mp3:'";
+                        $sslist2.="$row[17]";
+                        $sslist2.="',";
+                        $sslist2.="wav:'";
+                        $sslist2.="$row[18]";
+                        $sslist2.="'";
+                        $sslist2.="},";
+                        //echo "$row[3]_______$row[17]";
+                    } 
+                    $sslist2=substr($sslist2,0,$sslist.length-1);
+                    $sslist.=$sslist2;
+                    $sslist.="]";
+                ?>;
+		<!--        php        -->
+
+		<script>
+			//<![CDATA[
+			$(document).ready(function() {
+
+				var sslist = <?php                                        
+                    echo $sslist;
+                ?>;
+
+				new jPlayerPlaylist({
+						jPlayer: "#jquery_jplayer_2",
+						cssSelectorAncestor: "#jp_container_2"
+					},
+					sslist
+                    , {
+						swfPath: "/statics/js/",
+						supplied: "oga, mp3",
+						wmode: "window",
+						useStateClassSkin: true,
+						autoBlur: false,
+						smoothPlayBar: true,
+						keyEnabled: true
+					});
+			});
+			//]]>
+		</script>
+
+		<body>
+		    <canvas id="bg"></canvas>
+			<div class="yinyueshiting">
+				<div class="yinyue1">
+					<div class="sttop">
+					    <div class="dayuan">
+					        <img id="zhuangtai" src="{IMG_PATH}musicimages/stop-icon.png" alt="">
+					    </div>
+						<img id="xuanzhuan"  src="{IMG_PATH}musicimages/music.jpg" alt="">
+					</div>
+					<!--                    ja-->
+					<div class="bofangqi">
+						<div id="jquery_jplayer_2" class="jp-jplayer"></div>
+						<div id="jp_container_2" class="jp-audio" role="application" aria-label="media player">
+							<div class="jp-type-playlist">
+								<div class="jp-gui jp-interface">
+									<div class="jp-controls">
+										<button class="jp-previous" role="button" tabindex="0">previous</button>
+										<button class="jp-play" role="button" tabindex="0">play</button>
+										<button class="jp-next" role="button" tabindex="0">next</button>
+										<button class="jp-stop" role="button" tabindex="0">stop</button>
+									</div>
+									<div class="jp-progress">
+										<div class="jp-seek-bar">
+											<div class="jp-play-bar"></div>
+										</div>
+									</div>
+									<div class="jp-volume-controls">
+										<button class="jp-mute" role="button" tabindex="0">mute</button>
+										<button class="jp-volume-max" role="button" tabindex="0">max volume</button>
+										<div class="jp-volume-bar">
+											<div class="jp-volume-bar-value"></div>
+										</div>
+									</div>
+									<div class="jp-time-holder">
+										<div class="jp-current-time" role="timer" aria-label="time">&nbsp;</div>
+										<div class="jp-duration" role="timer" aria-label="duration">&nbsp;</div>
+									</div>
+									<div class="jp-toggles">
+										<button class="jp-repeat" role="button" tabindex="0">repeat</button>
+										<button class="jp-shuffle" role="button" tabindex="0">shuffle</button>
+									</div>
+								</div>
+
+								<div class="jp-no-solution">
+									<span>Update Required</span> To play the media you will need to either update your browser to a recent version or update your
+									<a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
+								</div>
+							</div>
+
+							<div class="jp-playlist">
+								<ul>
+									<li></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</body>
+
+		<script>
+			$(function() {
+				$(document).on("click", ".jp-playlist ul li div .jp-playlist-item", function() {
+					var name = $(this).text();
+					$(".zhengzaibofang").html(name);
+				})
+                
+                var audio=document.getElementById("jp_audio_0");
+                
+                audio.addEventListener("play",function(){
+					$("#xuanzhuan").addClass("xz");
+                    $("#zhuangtai").attr("src","/statics/images/musicimages/bofang-icon.png");
+                })
+                
+                audio.addEventListener("pause",function(){
+					$("#xuanzhuan").removeClass("xz");
+                    $("#zhuangtai").attr("src","/statics/images/musicimages/stop-icon.png");
+                })
+                
+			})
+		</script>
+        <script>
+    $(function(){
+      var canvas = document.getElementById('bg'),
+          ctx = canvas.getContext('2d')
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      ctx.lineWidth = .3;
+      ctx.strokeStyle = (new Color(150)).style;
+
+      var mousePosition = {
+        x: 30 * canvas.width / 100,
+        y: 30 * canvas.height / 100
+      };
+
+      var dots = {
+        nb: 360,
+        distance: 50,
+        d_radius: 100,
+        array: []
+      };
+
+      function colorValue(min) {
+        return Math.floor(Math.random() * 255 + min);
+      }
+
+      function createColorStyle(r,g,b) {
+        return 'rgba(' + r + ',' + g + ',' + b + ', 0.8)';
+      }
+
+      function mixComponents(comp1, weight1, comp2, weight2) {
+        return (comp1 * weight1 + comp2 * weight2) / (weight1 + weight2);
+      }
+
+      function averageColorStyles(dot1, dot2) {
+        var color1 = dot1.color,
+            color2 = dot2.color;
+
+        var r = mixComponents(color1.r, dot1.radius, color2.r, dot2.radius),
+            g = mixComponents(color1.g, dot1.radius, color2.g, dot2.radius),
+            b = mixComponents(color1.b, dot1.radius, color2.b, dot2.radius);
+        return createColorStyle(Math.floor(r), Math.floor(g), Math.floor(b));
+      }
+
+      function Color(min) {
+        min = min || 0;
+        this.r = colorValue(min);
+        this.g = colorValue(min);
+        this.b = colorValue(min);
+        this.style = createColorStyle(this.r, this.g, this.b);
+      }
+
+      function Dot(){
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+
+        this.vx = -.5 + Math.random();
+        this.vy = -.5 + Math.random();
+
+        this.radius = Math.random() * 2;
+
+        this.color = new Color();
+        console.log(this);
+      }
+
+      Dot.prototype = {
+        draw: function(){
+          ctx.beginPath();
+          ctx.fillStyle = this.color.style;
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+          ctx.fill();
+        }
+      };
+
+      function createDots(){
+        for(i = 0; i < dots.nb; i++){
+          dots.array.push(new Dot());
+        }
+      }
+
+      function moveDots() {
+        for(i = 0; i < dots.nb; i++){
+
+          var dot = dots.array[i];
+
+          if(dot.y < 0 || dot.y > canvas.height){
+            dot.vx = dot.vx;
+            dot.vy = - dot.vy;
+          }
+          else if(dot.x < 0 || dot.x > canvas.width){
+            dot.vx = - dot.vx;
+            dot.vy = dot.vy;
+          }
+          dot.x += dot.vx;
+          dot.y += dot.vy;
+        }
+      }
+
+      function connectDots() {
+        for(i = 0; i < dots.nb; i++){
+          for(j = 0; j < dots.nb; j++){
+            i_dot = dots.array[i];
+            j_dot = dots.array[j];
+
+            if((i_dot.x - j_dot.x) < dots.distance && (i_dot.y - j_dot.y) < dots.distance && (i_dot.x - j_dot.x) > - dots.distance && (i_dot.y - j_dot.y) > - dots.distance){
+              if((i_dot.x - mousePosition.x) < dots.d_radius && (i_dot.y - mousePosition.y) < dots.d_radius && (i_dot.x - mousePosition.x) > - dots.d_radius && (i_dot.y - mousePosition.y) > - dots.d_radius){
+                ctx.beginPath();
+                ctx.strokeStyle = averageColorStyles(i_dot, j_dot);
+                ctx.moveTo(i_dot.x, i_dot.y);
+                ctx.lineTo(j_dot.x, j_dot.y);
+                ctx.stroke();
+                ctx.closePath();
+              }
+            }
+          }
+        }
+      }
+
+      function drawDots() {
+        for(i = 0; i < dots.nb; i++){
+          var dot = dots.array[i];
+          dot.draw();
+        }
+      }
+
+      function animateDots() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        moveDots();
+        connectDots();
+        drawDots();
+
+        requestAnimationFrame(animateDots);	
+      }
+
+      $('canvas').on('mousemove', function(e){
+        mousePosition.x = e.pageX;
+        mousePosition.y = e.pageY;
+      });
+
+      $('canvas').on('mouseleave', function(e){
+        mousePosition.x = canvas.width / 2;
+        mousePosition.y = canvas.height / 2;
+      });
+
+      createDots();
+      requestAnimationFrame(animateDots);	
+    });
+
+    </script>
+</html>

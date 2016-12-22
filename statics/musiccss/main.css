@@ -1,0 +1,44 @@
+html{overflow: hidden;}
+body {width: 100%;height: 100%;background:#000 url(/statics/images/musicimages/001.jpg)no-repeat center center;background-size: cover;background-attachment: fixed;overflow: hidden;}
+.yinyueshiting{width:800px;height:400px;position:absolute;left:50%;top:50%;margin-left:-400px;margin-top:-200px;background:rgba(0,0,0,.6);overflow: hidden;border-top-right-radius:18px;border-bottom-right-radius: 18px;}
+.yinyue1{width:420px;height:400px;background:rgba(100,100,100,.5);}
+.sttop{width: 288px;height: 288px;margin: 0 auto;position: relative;}
+.sttop img{width: 268px;height: 268px;border-radius: 50%;margin-top: 20px;}
+.dayuan{width: 100px;height: 100px;position: absolute;border-radius: 100px;left: 50%;top: 50%;margin-left: -50px;margin-top: -50px;z-index:100}
+.dayuan img{width: 80px;height: 80px;background: rgba(0,0,0,.5);}
+a:hover{text-decoration:none;}
+
+.xz{animation:donghua linear 8s infinite;-webkit-animation:donghua linear 8s infinite;}
+@keyframes donghua{
+            0{transform:rotate(0deg);}
+            100%{transform:rotate(360deg);}
+        }
+        
+@-webkit-keyframes donghua{
+            0{-webkit-transform:rotate(0deg);}
+            100%{-webkit-transform:rotate(360deg);}
+        }
+/*滚动条*/
+
+/*滚动条 start*/
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 4px;
+        background:rgba(0,0,0,.3);
+      }
+      /*定义滚动条轨道 内阴影+圆角*/
+      ::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        background: #351B0B ;
+      }
+      /*定义滑块 内阴影+圆角*/  
+      ::-webkit-scrollbar-thumb {  
+        border-radius: 3px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+        background-color:rgba(234, 69, 159,.8);
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        border-radius: 3px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+        background-color:rgba(234, 69, 159,1);
+      }
